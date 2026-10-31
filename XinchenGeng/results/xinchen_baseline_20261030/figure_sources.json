@@ -1,0 +1,21 @@
+{
+  "source_files": {
+    "per_date_metrics.csv": "58b31f1839a7ec8495049444f3a8bafec68adffa127b230edc72371667750bb3",
+    "metrics.csv": "7c6dccceef4148979f1b6f7e8cc5fc6f31927409e369a5a899ea04e173c5194a",
+    "run.json": "478e3dddde2700c6d273035dec284ab8643e8d2cbe3fa6b42ed64c7961920d2b"
+  },
+  "plot_script_sha256": "6632d2abfba0fc73a22ca755f0b1863de68fc29c80d3515cc226115a707d76b7",
+  "model": "B0_small_main",
+  "metric": "CORR",
+  "aggregation": "one score per complete observation date",
+  "figure_files": {
+    "per_date_corr.png": "537d4b0450017814888124525164ebe6d98a896f41723f20bb671c0a61d32fcf",
+    "cumulative_corr.png": "31a9a1901bfab62c507072fefc5631f7ab7f0981eabbbd7b9757219b7988a259"
+  },
+  "cumulative_definition": "Within each split, chronological additive sum of per-date CORR; reset to zero. Not an investment return.",
+  "holdout_status": "Previously observed in earlier project experiments; historical development/reproduction evidence.",
+  "date_counts": {
+    "tuning": 183,
+    "holdout": 186
+  }
+}

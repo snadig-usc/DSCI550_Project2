@@ -1,0 +1,53 @@
+{
+  "status": "passed",
+  "validated_at_utc": "2026-10-31T05:02:05.049199+00:00",
+  "absolute_tolerance": 1e-10,
+  "all_date_corr": {
+    "dates": 369,
+    "rows": 2465414,
+    "maximum_absolute_error": 9.974659986866641e-17,
+    "formula": "average ranks -> Gaussian -> signed power 1.5; native target centering/power -> float64 Pearson"
+  },
+  "all_summary_metrics": {
+    "rows": 4,
+    "maximum_absolute_error": 1.3322676295501878e-15
+  },
+  "training_sample": {
+    "rows": 200000,
+    "keys_sha256": "6e8d08a0225e3249eff6e676b9d0cc10ef66b016276e1f0af24a2c8bd1f11b57",
+    "status": "matched"
+  },
+  "embargo": {
+    "configured_weekdays": 65,
+    "train_to_tuning_weekdays": 70,
+    "tuning_to_holdout_weekdays": 70
+  },
+  "saved_model_prediction_check": {
+    "date": "2023-01-06",
+    "rows": 6670,
+    "maximum_absolute_error": 0.0
+  },
+  "independent_ncorr_spot_check": {
+    "status": "passed",
+    "date": "2023-01-06",
+    "rows": 6670,
+    "neutralizer_columns": 300,
+    "absolute_error": 9.194034422677078e-17
+  },
+  "checked_input_hashes": [
+    "data\\raw\\v6.0\\features.json",
+    "data\\processed\\v6.0\\split_manifest.json",
+    "data\\processed\\v6.0\\cleaning_report.json",
+    "references\\official_sources.json",
+    "references\\v6_example_model.ipynb",
+    "data\\processed\\v6.0\\train.parquet",
+    "data\\processed\\v6.0\\tuning.parquet",
+    "data\\processed\\v6.0\\holdout.parquet",
+    "data\\raw\\v6.0\\validation_neutralizer.parquet"
+  ],
+  "checked_code_hashes": [
+    "scripts\\run_xinchen_baseline.py",
+    "scripts\\run_experiments.py"
+  ],
+  "scope": "Every CORR date and summary row; exact source/prediction key and target coverage; training sample and split bounds; input/source hashes; one full holdout date model and NCORR check. Does not retrain model or establish unseen-test status."
+}

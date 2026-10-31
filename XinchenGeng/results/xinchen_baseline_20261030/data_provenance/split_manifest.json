@@ -1,0 +1,45 @@
+{
+  "version": "v6.0",
+  "primary_target": "target_jupiter_60",
+  "auxiliary_target": "target_jupiter_20",
+  "feature_sets": [
+    "small",
+    "medium"
+  ],
+  "numeric_features": 350,
+  "excluded_text_features": [
+    "feature_country"
+  ],
+  "holdout_start_requested": "2023-01-01",
+  "full_train_max_date_before_sampling": "2018-12-28",
+  "tuning_date_strictly_after": "2019-03-29",
+  "tuning_date_strictly_before": "2022-10-07",
+  "holdout_date_at_or_after": "2023-01-06",
+  "embargo_weekdays": 65,
+  "embargo_calendar": "pandas BDay weekdays; official example uses 60, this run adds 5 weekdays",
+  "selection_policy": "Select using tuning NCORR only; freeze before scoring holdout",
+  "sampling_policy": "Cleaning retains all eligible rows; model training samples fixed 200000 rows seed 7",
+  "missing_feature_policy": "Preserve native NaN for LightGBM; never fit preprocessing on validation",
+  "missing_label_policy": "Drop rows only when primary target is null; auxiliary model filters its own label",
+  "duplicate_policy": "Fail on duplicate stock-date keys rather than silently choosing a row",
+  "partitions": {
+    "train": {
+      "rows": 4329443,
+      "dates": 835,
+      "date_min": "2003-01-03",
+      "date_max": "2018-12-28"
+    },
+    "tuning": {
+      "rows": 1211007,
+      "dates": 183,
+      "date_min": "2019-04-05",
+      "date_max": "2022-09-30"
+    },
+    "holdout": {
+      "rows": 1254407,
+      "dates": 186,
+      "date_min": "2023-01-06",
+      "date_max": "2026-07-24"
+    }
+  }
+}
