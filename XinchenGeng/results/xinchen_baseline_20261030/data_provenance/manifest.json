@@ -1,0 +1,66 @@
+{
+  "version": "v6.0",
+  "available_files": [
+    "v6.0/features.json",
+    "v6.0/live.parquet",
+    "v6.0/live_benchmark_models.parquet",
+    "v6.0/live_example_preds.csv",
+    "v6.0/live_example_preds.parquet",
+    "v6.0/live_neutralizer.parquet",
+    "v6.0/train.parquet",
+    "v6.0/train_benchmark_models.parquet",
+    "v6.0/train_neutralizer.parquet",
+    "v6.0/validation.parquet",
+    "v6.0/validation_benchmark_models.parquet",
+    "v6.0/validation_example_preds.csv",
+    "v6.0/validation_example_preds.parquet",
+    "v6.0/validation_neutralizer.parquet"
+  ],
+  "files": [
+    {
+      "dataset": "v6.0/features.json",
+      "path": "data\\raw\\v6.0\\features.json",
+      "bytes": 47870,
+      "sha256": "ee6c00bc9d5cb78aaab986630138512945301a3c588865ad61da5d0dea5ff634",
+      "retrieved_at_utc": "2026-10-27T02:20:08.742510+00:00",
+      "status": "cached",
+      "seconds": 0.58
+    },
+    {
+      "dataset": "v6.0/train.parquet",
+      "path": "data\\raw\\v6.0\\train.parquet",
+      "bytes": 2176263434,
+      "sha256": "58c1667a07323b072a12dca1924ec90a6c0adfe2c1100cd2b052930c3ed6f4ce",
+      "retrieved_at_utc": "2026-10-27T02:24:30.850120+00:00",
+      "status": "downloaded",
+      "seconds": 262.68
+    },
+    {
+      "dataset": "v6.0/validation.parquet",
+      "path": "data\\raw\\v6.0\\validation.parquet",
+      "bytes": 1396248115,
+      "sha256": "6c810d693af4f1966bbba3977f2187f3e61f6731e5bd1fe200f4cdbe6b8e3db2",
+      "retrieved_at_utc": "2026-10-27T02:22:51.393796+00:00",
+      "status": "downloaded",
+      "seconds": 162.65
+    },
+    {
+      "dataset": "v6.0/validation_neutralizer.parquet",
+      "path": "data\\raw\\v6.0\\validation_neutralizer.parquet",
+      "bytes": 4650158231,
+      "sha256": "717be56dfb14222fa7e4633acf2ebc98ba1baa53406e6b278399227ab8164dc6",
+      "retrieved_at_utc": "2026-10-27T02:29:37.665682+00:00",
+      "status": "downloaded",
+      "seconds": 406.27
+    },
+    {
+      "dataset": "v6.0/validation_example_preds.parquet",
+      "path": "data\\raw\\v6.0\\validation_example_preds.parquet",
+      "bytes": 17266800,
+      "sha256": "a80a6a89421a1c830f32d1556bde14d267467e6ed2b54f0ae47ed8cff4a9bf6e",
+      "retrieved_at_utc": "2026-10-27T02:24:34.717660+00:00",
+      "status": "downloaded",
+      "seconds": 3.87
+    }
+  ]
+}

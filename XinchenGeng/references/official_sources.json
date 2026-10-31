@@ -1,0 +1,161 @@
+{
+  "accessed_date": "2026-10-26",
+  "accessed_timezone": "America/Los_Angeles",
+  "purpose": "Official references for dataset preparation and independently implemented project experiments. The mirrored notebook is an attributed tutorial reference, not an experimental result.",
+  "sources": [
+    {
+      "id": "v6_data_page",
+      "url": "https://numer.ai/data/v6.0",
+      "verified_facts": {
+        "dataset_version": "v6.0",
+        "release_date": "2026-10-16",
+        "training_last_date": "2018-12-28",
+        "validation_first_date": "2019-01-04",
+        "feature_count": 1040,
+        "live_submission_start": "2026-11-06"
+      }
+    },
+    {
+      "id": "data_documentation",
+      "url": "https://docs.numer.ai/numerai-tournament/data",
+      "notes": [
+        "The v6 row key is the pair numerai_ticker and date. The time grouping column is date, replacing era.",
+        "The target alias refers to target_jupiter_60. Targets depend on future returns, and immature target values must be excluded for the exact selected target.",
+        "List current API files rather than assuming old dataset versions remain downloadable.",
+        "A target alias does not override the scoring configuration of a live round."
+      ]
+    },
+    {
+      "id": "unity_announcement",
+      "url": "https://blog.numer.ai/unifying-numerai-and-signals/",
+      "notes": [
+        "v6 was released for modeling on 2026-10-16. Live submissions and model uploads switch on 2026-11-06.",
+        "The Unity live payout scores are NCORR and NMMC. Raw Numerai CORR can be an additional research metric but does not reproduce NCORR.",
+        "v6 shares its base data and neutralizers with Signals v3.1."
+      ]
+    },
+    {
+      "id": "official_v6_tutorial",
+      "url": "https://github.com/numerai/example-scripts/blob/1e1a8f3aa1d3e210484bf544841cc14a82c993a9/numerai/v6_example_model.ipynb",
+      "raw_url": "https://raw.githubusercontent.com/numerai/example-scripts/1e1a8f3aa1d3e210484bf544841cc14a82c993a9/numerai/v6_example_model.ipynb",
+      "commit_sha": "1e1a8f3aa1d3e210484bf544841cc14a82c993a9",
+      "commit_date_utc": "2026-10-16T20:43:51Z",
+      "local_mirror": "references/v6_example_model.ipynb",
+      "local_sha256": "b826a0c7b964a8158483a6666c793de8cc94c2e408bd429e5e3b644574bad598",
+      "license_file": "references/NUMERAI_EXAMPLE_SCRIPTS_LICENSE.txt",
+      "baseline": {
+        "feature_set": "small excluding feature_country",
+        "max_sample_rows": 200000,
+        "sample_random_state": 7,
+        "model": "lightgbm.LGBMRegressor",
+        "parameters": {
+          "n_estimators": 300,
+          "learning_rate": 0.05,
+          "max_depth": 5,
+          "num_leaves": 31,
+          "colsample_bytree": 0.1,
+          "verbosity": -1
+        }
+      },
+      "validation": {
+        "partition_filter": "data_type == 'validation'",
+        "embargo_rule": "date > max(mature training date before sampling) + pandas.offsets.BDay(60)",
+        "target_filter": "selected target is non-null",
+        "score_group": "date",
+        "neutralizer_file": "v6.0/validation_neutralizer.parquet",
+        "neutralizer_columns": "columns beginning with neutralizer_column_",
+        "join_keys": ["numerai_ticker", "date"],
+        "join_validation": "one_to_one",
+        "benchmark_file": "v6.0/validation_benchmark_models.parquet",
+        "benchmark_column": "lgbm_jupiter_60",
+        "scoring_library": "numerai-tools==0.7.2",
+        "main_score_function": "neutral_correlation",
+        "contribution_function": "neutral_contribution"
+      },
+      "notes": [
+        "Compute the embargo cutoff using the original mature training rows, before any computational sampling.",
+        "The official sample is a memory-conscious teaching baseline, not a tuned tournament solution.",
+        "Prediction and neutralizer rows must align exactly. Reject missing or duplicate merge keys and missing neutralizer values.",
+        "A fixed public benchmark contribution backtest is only a directional offline proxy. It is not the live historical NMMC or NBMC score.",
+        "Export diagnostics with numerai_ticker, date, and within-date percentile-ranked prediction."
+      ]
+    },
+    {
+      "id": "scoring_implementation",
+      "url": "https://github.com/numerai/numerai-tools/blob/master/numerai_tools/scoring.py",
+      "raw_url": "https://raw.githubusercontent.com/numerai/numerai-tools/master/numerai_tools/scoring.py",
+      "notes": [
+        "neutral_correlation centers targets; predictions are ranked with average ties, Gaussian transformed, and neutralized; the residuals are scored with Pearson correlation.",
+        "neutral_correlation does not apply the 1.5 power transform used by raw Numerai CORR and does not normalize residual variance.",
+        "neutralize adds an intercept column and uses numpy.linalg.lstsq with rcond=1e-6. Input indices must match exactly and neither matrix may contain NaN.",
+        "neutral_contribution neutralizes both Gaussian-ranked predictions and benchmark, orthogonalizes predictions to benchmark, and dots them with centered targets divided by row count. Targets wholly within [0,1] are multiplied by four before centering.",
+        "The scoring helpers sort aligned indices internally. Use a unique stable row index for each scored date and merge by explicit keys; pandas positional alignment alone is insufficient.",
+        "Use numeric floating neutralizer matrices, verify finite values, and preserve every neutralizer column. One least-squares solve may score multiple prediction columns at once."
+      ]
+    },
+    {
+      "id": "raw_corr_definition",
+      "url": "https://docs.numer.ai/numerai-tournament/scoring/correlation-corr",
+      "notes": [
+        "Raw Numerai CORR averages ties, Gaussian-transforms ranked predictions, centers targets, applies signed power 1.5 to both, and computes Pearson correlation.",
+        "Log it as a secondary metric when the primary v6 experiment objective is NCORR."
+      ]
+    },
+    {
+      "id": "model_uploads",
+      "url": "https://docs.numer.ai/numerai-tournament/submissions/model-uploads",
+      "notes": [
+        "v6 model uploads open with the round starting 2026-11-06. Select v6.0 explicitly and do not upload a v6 pickle using a v5 data version.",
+        "A local validation experiment does not constitute a live submission."
+      ]
+    },
+    {
+      "id": "numerapi_download_implementation",
+      "url": "https://github.com/numerai/numerapi/blob/master/numerapi/base_api.py",
+      "notes": [
+        "NumerAPI.list_datasets returns currently available filenames.",
+        "NumerAPI.download_dataset accepts pandas Parquet filters. A filtered download reads only matching remote row groups and writes a local Parquet subset; its coverage must be recorded as a subset.",
+        "For column projection and memory limits, read a signed Parquet URL with fsspec/pyarrow or pandas and explicitly select columns."
+      ]
+    }
+  ],
+  "downloaded_feature_metadata": {
+    "path": "data/raw/v6.0/features.json",
+    "sha256": "ee6c00bc9d5cb78aaab986630138512945301a3c588865ad61da5d0dea5ff634",
+    "feature_sets_including_country": {"small": 101, "medium": 351, "all": 1040},
+    "numeric_feature_sets_excluding_country": {"small": 100, "medium": 350, "all": 1039},
+    "feature_country_is_in_all_three_sets": true,
+    "target_columns": [
+      "target", "target_raw_return_20", "target_raw_return_60",
+      "target_factor_neutral_20", "target_factor_neutral_60",
+      "target_factor_feat_neutral_20", "target_factor_feat_neutral_60",
+      "target_camille_20", "target_camille_60", "target_sydney_20", "target_sydney_60",
+      "target_irina_20", "target_irina_60", "target_alexandra_20", "target_alexandra_60",
+      "target_colleen_20", "target_colleen_60", "target_jean_20", "target_jean_60",
+      "target_eleven_4", "target_eleven_20", "target_eleven_60",
+      "target_jupiter_20", "target_jupiter_60"
+    ]
+  },
+  "observed_validation_schema": {
+    "path": "data/raw/v6.0/validation.parquet",
+    "rows": 2717738,
+    "row_groups": 14,
+    "schema_type_counts": {"string": 5, "int8": 1017, "float32": 46},
+    "key_dtype": "numerai_ticker and date are physical strings",
+    "pandas_index": "No physical index column; explicit stock/date keys required",
+    "small_medium_numeric_feature_dtype": "int8 for every numeric feature in the union",
+    "validation_partition": {
+      "rows": 2632248, "dates": 395,
+      "date_min": "2019-01-04", "date_max": "2026-07-24",
+      "null_jupiter_60": 0, "null_jupiter_20": 0
+    },
+    "test_partition": {
+      "rows": 85490, "dates": 12,
+      "date_min": "2026-07-31", "date_max": "2026-10-16",
+      "null_jupiter_60": 85490, "null_jupiter_20": 28663
+    },
+    "observed_nonnull_jupiter_target_bins": [0.0, 0.25, 0.5, 0.75, 1.0],
+    "inspection_date": "2026-10-26"
+  },
+  "schema_caveat": "Physical schema and partition counts above were inspected from the completed local validation file. Train and neutralizer physical schemas remain to be verified from their completed downloads."
+}
